@@ -2,7 +2,7 @@ import { IManagerService } from '../interfaces';
 import type { Config } from '@config/index';
 import { IConfigService } from '@common/config/interfaces';
 import readline from 'readline-sync';
-import { IHelperNumberService } from '@common/helper/interfaces';
+import { IHelperArrayService, IHelperNumberService } from '@common/helper/interfaces';
 import { IMessageService } from '@common/message/interfaces';
 
 export class ManagerService implements IManagerService {
@@ -13,6 +13,7 @@ export class ManagerService implements IManagerService {
     constructor(
         private readonly configService: IConfigService,
         private readonly helperNumberService: IHelperNumberService,
+        private readonly helperArrayService: IHelperArrayService,
         private readonly messageService: IMessageService
     ) {
         this.config = this.configService.getConfig();
@@ -72,15 +73,9 @@ export class ManagerService implements IManagerService {
 
     createManagerOptionArray = (input: number | number[] | number[][]): { value: string; title: string }[] => {
         if (!Array.isArray(input)) {
-            return Array.from({ length: input }, (_, index) => ({
-                value: `${index}`,
-                title: `${index} - ${index}`,
-            }));
+            return this.helperArrayService.generateNumberArray(input);
         }
 
-        return input.map((item, index) => ({
-            value: `${index}`,
-            title: `${index} - [${item}]`,
-        }));
+        return this.helperArrayService.generateOptionArray(input as number[]);
     };
 }
