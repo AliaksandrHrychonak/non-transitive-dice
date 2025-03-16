@@ -31,3 +31,5 @@ next-env.d.ts
 
 # package manager
 .pnpm-store/
+
+/README.md
