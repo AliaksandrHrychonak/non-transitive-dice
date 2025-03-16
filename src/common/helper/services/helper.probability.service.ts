@@ -24,32 +24,3 @@ export class HelperProbabilityService implements IHelperProbabilityService {
         return winningCases / totalCombinations;
     }
 }
-
-// public findOptimalOption(probabilities: number[][]): number {
-//     if (!probabilities.length) {
-//         return -1;
-//     }
-//
-//     let bestIndex = 0;
-//     let bestAverage = this.calculateRowAverage(probabilities[0], 0);
-//
-//     for (let i = 1; i < probabilities.length; i++) {
-//         const average = this.calculateRowAverage(probabilities[i], i);
-//         if (average > bestAverage) {
-//             bestIndex = i;
-//             bestAverage = average;
-//         }
-//     }
-//
-//     return bestIndex;
-// }
-//
-// private calculateRowAverage(row: number[], excludeIndex: number): number {
-//     const validValues = row.filter((_, index) => index !== excludeIndex);
-//     if (!validValues.length) {
-//         return 0;
-//     }
-//
-//     const sum = validValues.reduce((acc, curr) => acc + curr, 0);
-//     return sum / validValues.length;
-// }
