@@ -22,7 +22,7 @@ export class GameService implements IGameService {
         private readonly helperEncryptionService: IHelperEncryptionService,
         private readonly playerService: IPlayerService,
         private readonly diceTableService: IDiceTableService,
-        private readonly configService: IConfigService,
+        private readonly configService: IConfigService
     ) {
         this.config = this.configService.getConfig();
         this.configDiceLength = this.config.game.dices;
@@ -36,7 +36,7 @@ export class GameService implements IGameService {
         this.managerService.showHint(this.messageService.getMessage('game.determineFirstMove'));
 
         const computerFirstMoveDecider = this.playerService.createEncryptionValue(
-            this.helperEncryptionService.randomInt(0, this.configGame.firstMoveChoice),
+            this.helperEncryptionService.randomInt(0, this.configGame.firstMoveChoice)
         );
 
         this.managerService.showHint(
@@ -46,7 +46,7 @@ export class GameService implements IGameService {
                     max: this.configGame.firstMoveChoice - 1,
                 },
                 hmac: computerFirstMoveDecider.hmac,
-            }),
+            })
         );
 
         this.managerService.showHint(this.messageService.getMessage('game.determineFirstMoveGuessPrompt'));
@@ -62,14 +62,14 @@ export class GameService implements IGameService {
             this.messageService.getMessage('game.moveVerificationKey', {
                 value: computerFirstMoveDecider.number,
                 key: computerFirstMoveDecider.key,
-            }),
+            })
         );
 
         if (!this.helperEncryptionService.hmacDecrypt(computerFirstMoveDecider)) {
             this.managerService.showError(
                 this.messageService.getMessage('errors.gameCancelled', {
                     reason: 'The computer changed the value of its choice after your move.',
-                }),
+                })
             );
         }
 
@@ -81,14 +81,14 @@ export class GameService implements IGameService {
         config: {
             messagePrompt: string;
             messageHelp: string;
-        },
+        }
     ): Promise<number> {
         return this.managerService.promptSingleValue(options, config);
     }
 
     public async playerDiceSelection(
         isPersonFirst: boolean,
-        diceList: number[][],
+        diceList: number[][]
     ): Promise<{
         personDice: number[];
         computerDice: number[];
@@ -110,7 +110,7 @@ export class GameService implements IGameService {
             this.managerService.showHint(
                 this.messageService.getMessage('game.personDiceSelection', {
                     dice: personDice,
-                }),
+                })
             );
 
             const filterDiceList = [...diceList.filter((_, i) => i !== personDiceIndex)];
@@ -123,7 +123,7 @@ export class GameService implements IGameService {
                 this.messageService.getMessage('game.computerDiceSelection', {
                     dice: computerDice,
                     isPersonFirst,
-                }),
+                })
             );
         } else {
             const pcDiceIndex = this.helperEncryptionService.randomInt(0, diceList.length);
@@ -134,7 +134,7 @@ export class GameService implements IGameService {
                 this.messageService.getMessage('game.computerDiceSelection', {
                     dice: computerDice,
                     isPersonFirst,
-                }),
+                })
             );
 
             this.managerService.showHint(this.messageService.getMessage('game.chooseDice'));
@@ -146,7 +146,7 @@ export class GameService implements IGameService {
                 {
                     messagePrompt: this.messageService.getMessage('game.personSelection'),
                     messageHelp: this.diceTableService.createProbabilityTable(diceList),
-                },
+                }
             );
 
             personDice = filterDiceList[personDiceIndex];
@@ -154,7 +154,7 @@ export class GameService implements IGameService {
             this.managerService.showHint(
                 this.messageService.getMessage('game.personDiceSelection', {
                     value: personDice,
-                }),
+                })
             );
         }
 
@@ -162,7 +162,7 @@ export class GameService implements IGameService {
             this.managerService.showError(
                 this.messageService.getMessage('errors.gameCancelled', {
                     reason: 'Error when selecting the player and/or computer cube',
-                }),
+                })
             );
         }
 
@@ -172,15 +172,19 @@ export class GameService implements IGameService {
     public async makePlayerTurn(
         diceList: number[][],
         dice: number[],
-        isPersonFirst: boolean,
+        isPersonFirst: boolean
     ): Promise<{
         result: number;
         diceValue: number;
     }> {
-        this.managerService.showHint(this.messageService.getMessage('game.throw'));
+        this.managerService.showHint(
+            this.messageService.getMessage('game.throw', {
+                isPersonFirst,
+            })
+        );
 
         const randomValue = this.playerService.createEncryptionValue(
-            this.helperEncryptionService.randomInt(0, dice.length),
+            this.helperEncryptionService.randomInt(0, dice.length)
         );
 
         this.managerService.showHint(
@@ -190,13 +194,13 @@ export class GameService implements IGameService {
                     max: dice.length - 1,
                 },
                 hmac: randomValue.hmac,
-            }),
+            })
         );
 
         this.managerService.showHint(
             this.messageService.getMessage('game.addPlayerNumber', {
                 module: dice.length,
-            }),
+            })
         );
 
         const playerInput = await this.selectOption(this.managerService.createManagerOptionArray(dice.length), {
@@ -208,7 +212,7 @@ export class GameService implements IGameService {
             this.messageService.getMessage('game.moveVerificationKey', {
                 value: randomValue.number,
                 key: randomValue.key,
-            }),
+            })
         );
 
         const sum = playerInput + randomValue.number;
@@ -220,7 +224,7 @@ export class GameService implements IGameService {
                 computerValue: randomValue.number,
                 result,
                 module: dice.length,
-            }),
+            })
         );
 
         this.showThrowResultHint(dice[result], isPersonFirst);
@@ -237,7 +241,7 @@ export class GameService implements IGameService {
                 this.messageService.getMessage('game.deadHeat', {
                     personValue: personResult,
                     computerValue: pcResult,
-                }),
+                })
             );
             return this.managerService.exit();
         }
@@ -249,7 +253,7 @@ export class GameService implements IGameService {
                 personValue: personResult,
                 computerValue: pcResult,
                 isPersonWin: win,
-            }),
+            })
         );
 
         return this.managerService.exit();
@@ -264,7 +268,7 @@ export class GameService implements IGameService {
             this.messageService.getMessage('game.timeThrow', {
                 result,
                 isPersonFirst,
-            }),
+            })
         );
     }
 
@@ -276,7 +280,7 @@ export class GameService implements IGameService {
                     current: 0,
                     needed: this.configDiceLength.min,
                     dice: `${dice}`,
-                }),
+                })
             );
         }
 
@@ -287,7 +291,7 @@ export class GameService implements IGameService {
                     current: dice.length,
                     needed: this.configDiceLength.min - dice.length,
                     dice: `${dice}`,
-                }),
+                })
             );
         }
 
@@ -298,7 +302,7 @@ export class GameService implements IGameService {
                     current: dice.length,
                     excess: dice.length - this.configDiceLength.max,
                     dice: `${dice}`,
-                }),
+                })
             );
         }
     }
@@ -309,7 +313,7 @@ export class GameService implements IGameService {
                 this.messageService.getMessage('errors.invalidValueTypeDice', {
                     value: value,
                     dice: `${faces}`,
-                }),
+                })
             );
         }
 
@@ -320,7 +324,7 @@ export class GameService implements IGameService {
                     max: this.configDiceValues.max,
                     value: value,
                     dice: `${faces}`,
-                }),
+                })
             );
         }
     }
@@ -334,7 +338,7 @@ export class GameService implements IGameService {
                         current: 0,
                         needed: this.configDiceFaces.min,
                         dice: `${faces}`,
-                    }),
+                    })
                 );
             }
 
@@ -345,7 +349,7 @@ export class GameService implements IGameService {
                         current: faces.length,
                         needed: this.configDiceFaces.min - faces.length,
                         dice: `${faces}`,
-                    }),
+                    })
                 );
             }
 
@@ -356,7 +360,7 @@ export class GameService implements IGameService {
                         current: faces.length,
                         excess: faces.length - this.configDiceFaces.max,
                         dice: `${faces}`,
-                    }),
+                    })
                 );
             }
 
