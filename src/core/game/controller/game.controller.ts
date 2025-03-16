@@ -8,7 +8,7 @@ export class GameController {
 
     constructor(
         private readonly gameService: IGameService,
-        private readonly configService: IConfigService
+        private readonly configService: IConfigService,
     ) {
         this.config = this.configService.getConfig();
         this.configGame = this.config.game;
@@ -19,25 +19,14 @@ export class GameController {
 
         const isPersonFirst = await this.gameService.determineFirstPlayer(diceList);
         const { personDice, computerDice } = await this.gameService.playerDiceSelection(isPersonFirst, diceList);
-
-        // if (isPersonFirst) {
-        //     const person = await this.gameService.makePlayerTurn(diceList, personDice);
-        //     const pc = await this.gameService.makePlayerTurn(diceList, computerDice);
-        //     this.gameService.determineWinner(person.diceValue, pc.diceValue);
-        // } else {
-        //     const pc = await this.gameService.makePlayerTurn(diceList, computerDice);
-        //     const person = await this.gameService.makePlayerTurn(diceList, personDice);
-        //     this.gameService.determineWinner(person.diceValue, pc.diceValue);
-        // }
-
         const [firstPlayer, secondPlayer] = isPersonFirst ? [personDice, computerDice] : [computerDice, personDice];
 
-        const firstTurn = await this.gameService.makePlayerTurn(diceList, firstPlayer);
-        const secondTurn = await this.gameService.makePlayerTurn(diceList, secondPlayer);
+        const firstTurn = await this.gameService.makePlayerTurn(diceList, firstPlayer, isPersonFirst);
+        const secondTurn = await this.gameService.makePlayerTurn(diceList, secondPlayer, !isPersonFirst);
 
         this.gameService.determineWinner(
             isPersonFirst ? firstTurn.diceValue : secondTurn.diceValue,
-            isPersonFirst ? secondTurn.diceValue : firstTurn.diceValue
+            isPersonFirst ? secondTurn.diceValue : firstTurn.diceValue,
         );
     }
 }

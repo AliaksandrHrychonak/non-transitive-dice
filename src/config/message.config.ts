@@ -1,6 +1,6 @@
 export const messageConfig = {
     game: {
-        determineFirstMove: () => "Let's determine who makes the first move.",
+        determineFirstMove: () => 'Let\'s determine who makes the first move.',
         determineFirstMoveGuessPrompt: () => 'Try to guess my selection.',
 
         moveVerificationHmac: (
@@ -8,7 +8,7 @@ export const messageConfig = {
                 min: number | string;
                 max: number | string;
             },
-            hmac: string
+            hmac: string,
         ) => `I selected a random value in the range ${range.min}..${range.max} (HMAC=${hmac})`,
         moveVerificationKey: (value: number, key: string) => `My selection ${value} (KEY=${key})`,
 
@@ -21,7 +21,7 @@ export const messageConfig = {
 
         personDiceSelection: (dice: string) => `You choose the ${dice} dice.`,
 
-        timeThrow: (result: number | string) => `Throw is ${result}.`,
+        timeThrow: (result: number | string, isPersonFirst: boolean) => `${isPersonFirst ? 'You' : 'My'} throw is ${result}.`,
 
         throw: () => `It's time for my throw.`,
 
@@ -31,7 +31,7 @@ export const messageConfig = {
             personValue: number | string,
             computerValue: number | string,
             result: number | string,
-            module: number | string
+            module: number | string,
         ) => `The result is ${personValue} + ${computerValue} = ${result} (mod ${module})`,
 
         win: (personValue: number | string, computerValue: number | string, isPersonWin: boolean) =>
@@ -52,14 +52,14 @@ export const messageConfig = {
             dice: number | string,
             required: number | string,
             current: number | string,
-            needed: number | string
+            needed: number | string,
         ) =>
             `Not enough faces on the ${dice}. Required: ${required}, current count: ${current}. Need to add ${needed} more faces.`,
         tooManyFacesDice: (
             dice: number | string,
             max: number | string,
             current: number | string,
-            excess: number | string
+            excess: number | string,
         ) =>
             `Too many faces on the ${dice}. Maximum allowed: ${max}, current count: ${current}. Need to remove ${excess} faces.`,
 
@@ -74,7 +74,7 @@ export const messageConfig = {
                 min: number | string;
                 max: number | string;
             },
-            value: number | string
+            value: number | string,
         ) => `Invalid ${dice} configuration: Face value must be between ${range.min} and ${range.max}, got: ${value}`,
 
         invalidValueTypeDice: (dice: number | string, value: number | string) =>
