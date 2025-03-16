@@ -40,6 +40,8 @@ export const messageConfig = {
 
         deadHeat: (personValue: number | string, computerValue: number | string) =>
             `Wow! We have a draw! (${personValue} = ${computerValue})`,
+
+        titleProbabilityTable: () => `Probability Table`,
     },
     errors: {
         gameCancelled: (reason: string) => `Game cancelled: ${reason}`,
@@ -70,12 +72,12 @@ export const messageConfig = {
             `Invalid face index on the ${dice}: ${index}. Valid range: ${validRange}`,
 
         invalidValueDice: (
-            dice: number | string,
+            value: number | string,
             range: {
                 min: number | string;
                 max: number | string;
             },
-            value: number | string
+            dice: number | string
         ) => `Invalid ${dice} configuration: Face value must be between ${range.min} and ${range.max}, got: ${value}`,
 
         invalidValueTypeDice: (dice: number | string, value: number | string) =>

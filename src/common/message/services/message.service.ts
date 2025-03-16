@@ -1,6 +1,5 @@
 import { IMessageService } from '../interfaces';
 import type { Config } from '@config/index';
-import { IHelperStringService } from '@common/helper/interfaces';
 import { IConfigService } from '@common/config/interfaces';
 
 interface MessageValue {
@@ -15,10 +14,7 @@ export class MessageService implements IMessageService {
     private readonly config: Config;
     private readonly messages: typeof this.config.messages;
 
-    constructor(
-        private readonly helperStringService: IHelperStringService,
-        private readonly configService: IConfigService
-    ) {
+    constructor(private readonly configService: IConfigService) {
         this.config = this.configService.getConfig();
         this.messages = this.config.messages;
     }
@@ -34,8 +30,6 @@ export class MessageService implements IMessageService {
         if (typeof message === 'function') {
             return message(...Object.values(params));
         }
-
-        console.log(message);
 
         return message?.toString() || '';
     }
