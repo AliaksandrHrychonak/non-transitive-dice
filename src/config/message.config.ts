@@ -45,7 +45,6 @@ export const messageConfig = {
 
         rules: () => `
 Rules and Stages of Non-transitive Dice Game:
-Rules and Stages of Non-transitive Dice Game:
         
 Main Rule:
             
