@@ -55,6 +55,7 @@ export class ManagerService implements IManagerService {
         }
 
         if (response === this.configManagerMenu.help.value) {
+            this.showHint(this.messageService.getMessage('game.rules'));
             this.showHint(config.messageHelp);
             return this.promptSingleValue(choices, config);
         }

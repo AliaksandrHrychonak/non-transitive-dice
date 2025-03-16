@@ -42,6 +42,23 @@ export const messageConfig = {
             `Wow! We have a draw! (${personValue} = ${computerValue})`,
 
         titleProbabilityTable: () => `Probability Table`,
+
+        rules: () => `
+Rules and Stages of Non-transitive Dice Game:
+Rules and Stages of Non-transitive Dice Game:
+        
+Main Rule:
+            
+Computer and user choose different dice, make throws, and whoever rolls the higher number wins.
+            
+Game Stages:
+            
+1. Determining the first move through fair random number generation.
+2. First player chooses a die from available options.
+3. Second player chooses another die (cannot choose the same die as the first player).
+4. Each player makes a throw using "fair" random number generation (order of throws doesn't matter).
+5. Winner is determined by the higher rolled number.
+`,
     },
     errors: {
         gameCancelled: (reason: string) => `Game cancelled: ${reason}`,
