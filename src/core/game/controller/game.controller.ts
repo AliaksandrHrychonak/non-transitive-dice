@@ -1,21 +1,14 @@
 import { IGameService } from '../interfeces';
-import { IConfigService } from '@common/config/interfaces';
-import type { Config } from '@config/index';
+import { IDiceValidatorService } from '@core/dice/interfaces';
 
 export class GameController {
-    private readonly configGame: typeof this.config.game;
-    private readonly config: Config;
-
     constructor(
         private readonly gameService: IGameService,
-        private readonly configService: IConfigService,
-    ) {
-        this.config = this.configService.getConfig();
-        this.configGame = this.config.game;
-    }
+        private readonly diceValidatorService: IDiceValidatorService
+    ) {}
 
     async start(dice: string[]): Promise<void> {
-        const diceList = this.gameService.createDice(dice);
+        const diceList = this.diceValidatorService.validate(dice);
 
         const isPersonFirst = await this.gameService.determineFirstPlayer(diceList);
         const { personDice, computerDice } = await this.gameService.playerDiceSelection(isPersonFirst, diceList);
@@ -26,7 +19,7 @@ export class GameController {
 
         this.gameService.determineWinner(
             isPersonFirst ? firstTurn.diceValue : secondTurn.diceValue,
-            isPersonFirst ? secondTurn.diceValue : firstTurn.diceValue,
+            isPersonFirst ? secondTurn.diceValue : firstTurn.diceValue
         );
     }
 }

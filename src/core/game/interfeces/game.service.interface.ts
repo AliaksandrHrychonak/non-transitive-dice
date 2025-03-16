@@ -1,11 +1,9 @@
 export interface IGameService {
-    createDice(dice: string[]): number[][];
-
     determineFirstPlayer(diceList: number[][]): Promise<boolean>;
 
     playerDiceSelection(
         isPersonFirst: boolean,
-        diceList: number[][],
+        diceList: number[][]
     ): Promise<{
         personDice: number[];
         computerDice: number[];
@@ -14,7 +12,7 @@ export interface IGameService {
     makePlayerTurn(
         diceList: number[][],
         dice: number[],
-        isPersonFirst: boolean,
+        isPersonFirst: boolean
     ): Promise<{
         result: number;
         diceValue: number;
